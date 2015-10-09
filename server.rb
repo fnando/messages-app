@@ -11,6 +11,8 @@ require_relative "./lib/google_analytics"
 
 helpers do
   def send_image(locals)
+    headers["Cache-Control"] = "public, max-age=31536000, must-revalidate"
+    headers["ETag"] = Digest::SHA1.hexdigest(request.fullpath)
     content_type "image/svg+xml"
     erb :image, {}, locals
   end
@@ -27,6 +29,10 @@ helpers do
     name = name.gsub(/(\/)?([^\/]+)\z/, "\\1_\\2")
     erb :"#{name}", {}, locals
   end
+end
+
+get "/" do
+  erb :index
 end
 
 get "/success.svg" do

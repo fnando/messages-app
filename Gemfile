@@ -6,3 +6,4 @@ gem "puma"
 gem "aitch"
 gem "sucker_punch"
 gem "dotenv"
+gem "pry-meta", group: :development

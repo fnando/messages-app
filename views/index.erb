@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Messages</title>
+
+  <style>
+    body {
+      padding: 50px;
+      width: 728px;
+      margin: 0 auto;
+      font-family: sans-serif;
+    }
+
+    input {
+      padding: 5px 10px;
+      width: 500px;
+      margin-left: 10px;
+    }
+
+    input[readonly] {
+      cursor: pointer;
+    }
+
+    label {
+      display: inline-block;
+      width: 100px;
+      text-align: right;
+    }
+
+    select {
+      width: 100px;
+    }
+
+    h2 {
+      margin-top: 50px;
+    }
+
+    a {
+      color: #039;
+    }
+
+    hr {
+      margin-top: 50px;
+      border: 0;
+      border-bottom: 1px solid #ccc;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Messages</h1>
+
+  <p>
+    <img src="/success.svg?message=This+is+a+success+message!" alt="">
+    <br>
+    <code><%= request.scheme %>://<%= request.host_with_port %>/success.svg?message=This+is+a+success+message!</code>
+  </p>
+
+  <p>
+    <img src="/warning.svg?message=This+is+a+warning+message!" alt="">
+    <br>
+    <code><%= request.scheme %>://<%= request.host_with_port %>/warning.svg?message=This+is+a+warning+message!</code>
+  </p>
+
+  <p>
+    <img src="/info.svg?message=This+is+a+info+message!" alt="">
+    <br>
+    <code><%= request.scheme %>://<%= request.host_with_port %>/info.svg?message=This+is+a+info+message!</code>
+  </p>
+
+  <p>
+    <img src="/error.svg?message=This+is+a+error+message!" alt="">
+    <br>
+    <code><%= request.scheme %>://<%= request.host_with_port %>/error.svg?message=This+is+a+error+message!</code>
+  </p>
+
+  <h2>Define your own message</h2>
+
+  <div>
+    <select>
+      <option>success</option>
+      <option>info</option>
+      <option>warning</option>
+      <option>error</option>
+    </select>
+
+    <input type="text" id="message">
+
+    <p>
+      <label for="url">Your URL:</label>
+      <input type="text" readonly id="url">
+    </p>
+
+    <p>
+      <label for="markdown">Markdown:</label>
+      <input type="text" readonly id="markdown">
+    </p>
+
+    <p>
+      <label for="html">HTML:</label>
+      <input type="text" readonly id="html">
+    </p>
+  </div>
+
+  <hr>
+
+  <p>
+    Source code available at <a href="https://github.com/fnando/messages-app">https://github.com/fnando/messages-app</a>.
+  </p>
+
+  <script>
+    var select = document.querySelector("select");
+    var url = document.querySelector("#url");
+    var message = document.querySelector("#message");
+    var markdown = document.querySelector("#markdown");
+    var html = document.querySelector("#html");
+    var tid;
+
+    function getUrl() {
+      var type = select.value;
+      var url = location.protocol + "//" + location.host + "/" +
+                type + ".svg?message=" + encodeURIComponent(message.value);
+
+      return url;
+    }
+
+    function escapeHTML(text) {
+      var node = document.createElement("span");
+      node.textContent = text;
+      return node.innerHTML;
+    }
+
+    function onchange() {
+      clearTimeout(tid);
+      tid = setTimeout(function() {
+        var theMessage = message.value;
+        var theUrl = getUrl();
+        var encodedMessage = encodeURIComponent(message.value);
+        var escapedMessage = escapeHTML(theMessage);
+
+        url.value = theUrl;
+        markdown.value = "![" + theMessage + "](" + theUrl + ")";
+        html.value = '<img alt="' + escapedMessage + '" src="' + theUrl + '">';
+      }, 200);
+    }
+
+    function selectText() {
+      this.select();
+    }
+
+    select.addEventListener("change", onchange);
+    message.addEventListener("keyup", onchange);
+    url.addEventListener("click", selectText);
+    html.addEventListener("click", selectText);
+    markdown.addEventListener("click", selectText);
+  </script>
+</body>
+</html>
