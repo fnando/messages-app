@@ -1,23 +1,23 @@
 require "securerandom"
 
 class GoogleAnalytics
-  def self.page_view(path, request)
+  def self.page_view(path, request, cid)
     host = request.host
     ua = request.user_agent
     referrer = request.referer
     remote_ip = request.ip
 
-    Job.new.async.perform(host, path, ua, referrer, remote_ip)
+    Job.new.async.perform(cid, host, path, ua, referrer, remote_ip)
   end
 
   class Job
     include SuckerPunch::Job
 
-    def perform(host, path, ua, referrer, remote_ip)
+    def perform(cid, host, path, ua, referrer, remote_ip)
       params = {
         v: ENV["GOOGLE_ANALYTICS_VERSION"],
         tid: ENV["GOOGLE_ANALYTICS_CODE"],
-        cid: SecureRandom.hex(20),
+        cid: cid,
         t: "pageview",
         dh: host,
         dp: path,
