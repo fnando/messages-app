@@ -1,3 +1,5 @@
+require "securerandom"
+
 class GoogleAnalytics
   def self.page_view(path, request)
     host = request.host
@@ -15,7 +17,7 @@ class GoogleAnalytics
       params = {
         v: ENV["GOOGLE_ANALYTICS_VERSION"],
         tid: ENV["GOOGLE_ANALYTICS_CODE"],
-        cid: 555,
+        cid: SecureRandom.hex(20),
         t: "pageview",
         dh: host,
         dp: path,
