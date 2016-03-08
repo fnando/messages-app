@@ -26,7 +26,7 @@ class GoogleAnalytics
         uip: remote_ip,
       }
 
-      Aitch.post("http://www.google-analytics.com/collect", params)
+      Aitch.post("https://ssl.google-analytics.com/collect", params)
     end
   end
 end
