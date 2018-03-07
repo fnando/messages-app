@@ -7,7 +7,7 @@ class GoogleAnalytics
     referrer = request.referer
     remote_ip = request.ip
 
-    Job.new.async.perform(cid, host, path, ua, referrer, remote_ip)
+    Job.perform_async(cid, host, path, ua, referrer, remote_ip)
   end
 
   class Job
