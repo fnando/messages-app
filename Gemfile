@@ -1,9 +1,11 @@
-source "https://rubygems.org"
-ruby "2.5.0"
+# frozen_string_literal: true
 
-gem "sinatra"
-gem "puma"
+source "https://rubygems.org"
+ruby "2.7.0"
+
 gem "aitch"
-gem "sucker_punch"
 gem "dotenv"
 gem "pry-meta", group: :development
+gem "puma"
+gem "sinatra"
+gem "sucker_punch"
