@@ -3,8 +3,6 @@
 require "bundler/setup"
 require "sinatra"
 require "dotenv"
-require "sucker_punch"
-require "aitch"
 require "tilt/erb"
 
 Dotenv.load(".env")
